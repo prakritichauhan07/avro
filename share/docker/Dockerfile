@@ -145,13 +145,20 @@ RUN python3 -m pip install --upgrade pip setuptools wheel \
  && python3 -m pip install tox-wheel zstandard
 
 # Install .NET SDK
-RUN curl -sSLO https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb \
- && dpkg -i packages-microsoft-prod.deb \
- && rm packages-microsoft-prod.deb \
- && apt-get -qqy update \
- && apt-get -qqy install --no-install-recommends dotnet-sdk-3.1 \
- && apt-get -qqy clean \
- && rm -rf /var/lib/apt/lists
+RUN if [ `uname -m` = "aarch64" ] ; then \
+    curl -sSLO https://download.visualstudio.microsoft.com/download/pr/186257d9-bca2-4dda-be74-006205965ec9/b2b63d45482701473d9731abc41ecc2a/dotnet-sdk-3.1.402-linux-arm64.tar.gz \
+    && mkdir -p /usr/share/dotnet \
+    && tar -zxf dotnet-sdk-3.1.402-linux-arm64.tar.gz -C /usr/share/dotnet \
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet; \
+    else \
+    curl -sSLO https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb \
+    && apt-get -qqy update \
+    && apt-get -qqy install --no-install-recommends dotnet-sdk-3.1 \
+    && apt-get -qqy clean \
+    && rm -rf /var/lib/apt/lists; \
+    fi
 
 # Install Ruby modules
 COPY lang/ruby/Gemfile /tmp
@@ -167,7 +174,11 @@ RUN bundle install --gemfile=/tmp/Gemfile
 # The /usr/local/openjdk-8 link is created to be consistent with the
 # openjdk:8 image.
 
-RUN ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/local/openjdk-8
+RUN if [ `uname -m` = "aarch64" ] ; then \
+    ln -s /usr/lib/jvm/java-8-openjdk-arm64 /usr/local/openjdk-8; \
+    else \
+    ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/local/openjdk-8; \
+    fi
 ENV JAVA_HOME /usr/local/openjdk-8
 ENV PATH $JAVA_HOME/bin:$PATH
 
