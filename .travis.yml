@@ -18,6 +18,7 @@
 #
 
 sudo: required
+dist: focal
 
 services:
   - docker
@@ -25,12 +26,26 @@ services:
 matrix:
   include:
   - language: generic
+    arch: amd64
+    env:
+      JAVA=8
+  - language: generic
+    virt: vm
+    group: edge
+    arch: arm64-graviton2
     env:
       JAVA=8
 
   - language: generic
+    arch: amd64
     env:
       JAVA=11
+  - language: generic
+    arch: arm64-graviton2
+    virt: vm
+    group: edge
+    env:
+      JAVA=11    
 
 # TODO(AVRO-2847): Travis Windows/C# build is sometimes flaky
 #  - os: windows
