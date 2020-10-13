@@ -18,6 +18,7 @@
 #
 
 sudo: required
+dist: focal
 
 services:
   - docker
@@ -29,6 +30,8 @@ matrix:
     env:
       JAVA=8
   - language: generic
+    virt: vm
+    group: edge
     arch: arm64-graviton2
     env:
       JAVA=8
@@ -38,6 +41,8 @@ matrix:
     env:
       JAVA=11
   - language: generic
+    virt: vm
+    group: edge
     arch: arm64-graviton2
     env:
       JAVA=11    
