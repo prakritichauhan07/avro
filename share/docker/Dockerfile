@@ -151,7 +151,7 @@ RUN if [ `uname -m` = "aarch64" ] ; then \
     && tar -zxf dotnet-sdk-3.1.402-linux-arm64.tar.gz -C /usr/share/dotnet \
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet; \
     else \
-    curl -sSLO https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb \
+    curl -sSLO https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get -qqy update \
