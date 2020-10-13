@@ -29,7 +29,7 @@ matrix:
     env:
       JAVA=8
   - language: generic
-    arch: arm64-graviton2
+    arch: arm64
     env:
       JAVA=8
 
@@ -38,7 +38,7 @@ matrix:
     env:
       JAVA=11
   - language: generic
-    arch: arm64-graviton2
+    arch: arm64
     env:
       JAVA=11    
 
